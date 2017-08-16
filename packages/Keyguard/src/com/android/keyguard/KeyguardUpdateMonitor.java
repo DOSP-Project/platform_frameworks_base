@@ -587,11 +587,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     }
 
     private boolean isFingerprintDisabled(int userId) {
-        final DevicePolicyManager dpm =
-                (DevicePolicyManager) mContext.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        return dpm != null && (dpm.getKeyguardDisabledFeatures(null, userId)
-                    & DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT) != 0
-                || isSimPinSecure();
+        return false;
     }
 
     public boolean getUserCanSkipBouncer(int userId) {
@@ -608,8 +604,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     }
 
     public boolean isUnlockingWithFingerprintAllowed() {
-        return mStrongAuthTracker.isUnlockingWithFingerprintAllowed()
-                && !hasFingerprintUnlockTimedOut(sCurrentUser);
+        return true;
     }
 
     public boolean needsSlowUnlockTransition() {
@@ -954,8 +949,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
         }
 
         public boolean isUnlockingWithFingerprintAllowed() {
-            int userId = getCurrentUser();
-            return isFingerprintAllowedForUser(userId);
+            return true;
         }
 
         public boolean hasUserAuthenticatedSinceBoot() {
@@ -1198,8 +1192,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     }
 
     public boolean isUnlockWithFingerprintPossible(int userId) {
-        return mFpm != null && mFpm.isHardwareDetected() && !isFingerprintDisabled(userId)
-                && mFpm.getEnrolledFingerprints(userId).size() > 0;
+        return true;
     }
 
     private void stopListeningForFingerprint() {
